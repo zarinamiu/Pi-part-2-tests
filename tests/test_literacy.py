@@ -1,16 +1,25 @@
+import pytest
 from models.financial_literacy import FinancialLiteracyModel
 
 
-def test_literacy_is_deterministic():
-    profile = {
-        "age": 30,
-        "income": 60000,
-        "savings": 10000,
-        "expenses": 45000,
-        "debt": 5000,
-        "has_emergency_fund": False,
+@pytest.fixture
+def base_profile():
+    return {
+        "age": 34,
+        "income": 120000,
+        "savings": 45000,
+        "expenses": 65300,
+        "debt": 0,
+        "has_emergency_fund": True,
         "has_budget": True,
-        "has_insurance": True,
+        "has_insurance": False
     }
+
+
+def test_literacy_is_deterministic(base_profile):
     model = FinancialLiteracyModel()
-    assert model.analyze_profile(profile) == model.analyze_profile(profile)
+
+    res1 = model.analyze_profile(base_profile)
+    res2 = model.analyze_profile(base_profile)
+
+    assert res1 == res2
